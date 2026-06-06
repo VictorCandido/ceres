@@ -8,6 +8,7 @@ import { getEnvelopesWithBalance } from "@/server/envelopes/queries"
 import { formatBRL } from "@/lib/money"
 import { currentReferenceMonth } from "@/lib/date"
 import { Logo } from "@/components/logo"
+import { AppFooter } from "@/components/app-footer"
 import type { EnvelopeWithBalance } from "@/types"
 
 interface DashboardPageProps {
@@ -63,6 +64,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
           </div>
         )}
       </main>
+      <AppFooter />
     </div>
   )
 }
