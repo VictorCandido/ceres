@@ -7,6 +7,7 @@ import { CreateEnvelopeDialog } from "@/components/create-envelope-dialog"
 import { getEnvelopesWithBalance } from "@/server/envelopes/queries"
 import { formatBRL } from "@/lib/money"
 import { currentReferenceMonth } from "@/lib/date"
+import { Logo } from "@/components/logo"
 import type { EnvelopeWithBalance } from "@/types"
 
 interface DashboardPageProps {
@@ -30,7 +31,7 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     <div className="flex flex-col min-h-screen">
       <header className="sticky top-0 z-10 border-b bg-background/95 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-4">
-          <span className="font-semibold tracking-tight">Ceres</span>
+          <Logo size="sm" />
           <MonthNav month={month} />
           <CreateEnvelopeDialog />
         </div>
