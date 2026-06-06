@@ -98,7 +98,7 @@ export function EditExpenseDialog({ expense, envelopes }: EditExpenseDialogProps
               <Select
                 name="envelopeId"
                 value={selectedEnvelopeId}
-                onValueChange={setSelectedEnvelopeId}
+                onValueChange={(value) => { if (value !== null) setSelectedEnvelopeId(value) }}
                 required
               >
                 <SelectTrigger id={`envelopeId-${expense.id}`}>

@@ -30,7 +30,7 @@ export function ExpenseList({ expenses, envelopes }: ExpenseListProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-3">
-        <Select value={filterEnvelopeId} onValueChange={setFilterEnvelopeId}>
+        <Select value={filterEnvelopeId} onValueChange={(value) => { if (value !== null) setFilterEnvelopeId(value) }}>
           <SelectTrigger className="w-52" aria-label="Filtrar por caixinha">
             <SelectValue>
               {filterEnvelopeId === "all"
