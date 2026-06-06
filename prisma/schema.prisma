@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Envelope {
+  id           String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  color        String?
+  icon         String?
+  displayOrder Int             @default(0)
+  archived     Boolean         @default(false)
+  createdAt    DateTime        @default(now()) @db.Timestamptz
+  updatedAt    DateTime        @updatedAt @db.Timestamptz
+
+  limits   EnvelopeLimit[]
+  expenses Expense[]
+}
+
+model EnvelopeLimit {
+  id                 String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  envelopeId         String   @db.Uuid
+  limitCents         Int
+  effectiveFromMonth String
+
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+
+  envelope Envelope @relation(fields: [envelopeId], references: [id], onDelete: Cascade)
+
+  @@unique([envelopeId, effectiveFromMonth])
+}
+
+model Expense {
+  id             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  envelopeId     String   @db.Uuid
+  amountCents    Int
+  description    String?
+  occurredAt     DateTime @db.Timestamptz
+  referenceMonth String
+
+  createdAt DateTime @default(now()) @db.Timestamptz
+  updatedAt DateTime @updatedAt @db.Timestamptz
+
+  envelope Envelope @relation(fields: [envelopeId], references: [id], onDelete: Restrict)
+
+  @@index([envelopeId, referenceMonth])
+}
