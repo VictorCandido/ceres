@@ -5,10 +5,12 @@ import { MonthNav } from "@/components/month-nav"
 import { EnvelopeCard } from "@/components/envelope-card"
 import { CreateEnvelopeDialog } from "@/components/create-envelope-dialog"
 import { getEnvelopesWithBalance } from "@/server/envelopes/queries"
+import { getExpensesByMonth } from "@/server/expenses/queries"
 import { formatBRL } from "@/lib/money"
 import { currentReferenceMonth } from "@/lib/date"
 import { Logo } from "@/components/logo"
 import { AppFooter } from "@/components/app-footer"
+import { ExpensesHistory } from "@/components/expenses-history"
 import type { EnvelopeWithBalance } from "@/types"
 
 interface DashboardPageProps {
@@ -22,7 +24,10 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
     redirect(`/${currentReferenceMonth()}`)
   }
 
-  const envelopes = await getEnvelopesWithBalance(month)
+  const [envelopes, expenses] = await Promise.all([
+    getEnvelopesWithBalance(month),
+    getExpensesByMonth(month),
+  ])
 
   const totalLimit = envelopes.reduce((s: number, e: EnvelopeWithBalance) => s + e.currentLimit, 0)
   const totalSpent = envelopes.reduce((s: number, e: EnvelopeWithBalance) => s + e.totalSpent, 0)
@@ -63,6 +68,8 @@ export default async function DashboardPage({ params }: DashboardPageProps) {
             ))}
           </div>
         )}
+
+        <ExpensesHistory expenses={expenses} />
       </main>
       <AppFooter />
     </div>
